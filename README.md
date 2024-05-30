@@ -1,3 +1,5 @@
+![Blackjack and hookers meme](https://github.com/dangh/blackjack.fish/assets/1020347/69e5311c-9982-4063-a711-9d27192129cc)
+
 # blackjack.fish
 
 ## Installation
