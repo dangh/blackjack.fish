@@ -98,7 +98,7 @@ To overcome this, we can leverage repaint function. It will do the heavy lifting
 ```fish
 function _blackjack_license_paint
     # read the license from the cache
-    echo -n $_blackjack_licence
+    printf $_blackjack_licence
 end
 
 function _blackjack_license_repaint -v PWD

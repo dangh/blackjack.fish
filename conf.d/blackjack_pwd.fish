@@ -41,13 +41,13 @@ function _blackjack_pwd
         set first
         for part in home git_dir git_base dir base
             set var _blackjack_pwd_{$part}
-            echo -n $$var | while read -d / -z dir
+            printf $$var | while read -d / -z dir
                 if set -q first
                     set -e first
                 else
-                    echo -n $sep
+                    printf $sep
                 end
-                echo -n (_blackjack_format pwd_{$part} $dir)
+                printf (_blackjack_format pwd_{$part} $dir)
             end
         end
     end
@@ -59,32 +59,32 @@ function _blackjack_pwd
 
     function _blackjack_pwd_home_format_default
         set_color green
-        echo -n '〜'
+        printf '〜'
     end
 
     function _blackjack_pwd_git_dir_format_default
         set_color green
-        echo -n (_blackjack_pwd_truncate -l 2 $argv)
+        printf (_blackjack_pwd_truncate -l 2 $argv)
     end
 
     function _blackjack_pwd_git_base_format_default
         set_color yellow
-        echo -n $argv
+        printf $argv
     end
 
     function _blackjack_pwd_dir_format_default
         set_color green
-        echo -n (_blackjack_pwd_truncate -l 2 $argv)
+        printf (_blackjack_pwd_truncate -l 2 $argv)
     end
 
     function _blackjack_pwd_base_format_default
         set_color green
-        echo -n $argv
+        printf $argv
     end
 
     function _blackjack_pwd_sep_format_default
         set_color green
-        echo -n /
+        printf /
     end
 
 end

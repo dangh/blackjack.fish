@@ -5,7 +5,7 @@ function _blackjack_status
     function _blackjack_status_paint
         for code in $_blackjack_status
             if test $code -ne 0
-                echo -n '|' $_blackjack_status
+                printf "| $_blackjack_status"
                 break
             end
         end
@@ -19,7 +19,7 @@ function _blackjack_status
 
     function _blackjack_status_format_default
         set_color red
-        echo -n $argv
+        printf $argv
     end
 
 end

@@ -27,7 +27,7 @@ function _blackjack_cmd_duration
 
     function _blackjack_cmd_duration_format_default
         set_color yellow
-        echo -n $argv
+        printf $argv
     end
 
 end

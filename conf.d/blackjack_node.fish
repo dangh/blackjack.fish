@@ -3,7 +3,7 @@ status is-interactive || return
 function _blackjack_node
 
     function _blackjack_node_paint
-        echo -n $nvm_current_version
+        printf $nvm_current_version
     end
 
     function _blackjack_node_repaint -v nvm_current_version
@@ -12,7 +12,7 @@ function _blackjack_node
 
     function _blackjack_node_format_default
         set_color green
-        echo -n $argv
+        printf $argv
     end
 
 end

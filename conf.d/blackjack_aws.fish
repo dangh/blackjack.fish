@@ -3,7 +3,7 @@ status is-interactive || return
 function _blackjack_aws
 
     function _blackjack_aws_paint
-        echo -n $AWS_PROFILE
+        printf $AWS_PROFILE
     end
 
     function _blackjack_aws_repaint -v AWS_PROFILE
@@ -23,7 +23,7 @@ function _blackjack_aws
             case PROD
                 set_color red
         end
-        echo -n $profile
+        printf $profile
     end
 
 end

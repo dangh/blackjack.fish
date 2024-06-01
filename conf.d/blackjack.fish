@@ -17,7 +17,7 @@ function _blackjack_format -a item
         $format $value
         set_color normal
     else
-        echo -n $value
+        printf $value
     end
 end
 
