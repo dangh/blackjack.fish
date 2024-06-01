@@ -77,8 +77,8 @@ function blackjack
     # return painter function
     set painter _blackjack_painter__{$preset}
     set painted _blackjack_painted__{$preset}
-    function $painter -V painted
-        printf $$painted
-    end
+    eval "function $painter
+        printf \$$painted
+    end"
     printf $painter
 end
