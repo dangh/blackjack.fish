@@ -18,7 +18,6 @@ function _blackjack_pwd
             case '*'
                 set -g _blackjack_pwd_home
         end
-        set -g _blackjack_pwd_git_root (command git --no-optional-locks rev-parse --show-toplevel 2>/dev/null)
         if test -n "$_blackjack_pwd_git_root"
             set -g _blackjack_pwd_git_dir (path dirname "$_blackjack_pwd_git_root")
             set -g _blackjack_pwd_git_base (path basename "$_blackjack_pwd_git_root")
@@ -39,9 +38,8 @@ function _blackjack_pwd
         set -g _blackjack_pwd_base (path basename $pwd)
 
         set sep /
-        switch (type -t _blackjack_pwd_sep 2>/dev/null)
-            case function
-                set sep (_blackjack_pwd_sep)
+        if functions -q _blackjack_pwd_sep
+            set sep (_blackjack_pwd_sep)
         end
 
         # paint
@@ -79,6 +77,7 @@ function _blackjack_pwd
     end
 
     function _blackjack_pwd_repaint -v PWD
+        set -g _blackjack_pwd_git_root (command git --no-optional-locks rev-parse --show-toplevel 2>/dev/null)
         emit blackjack_paint pwd
     end
 

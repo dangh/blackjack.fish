@@ -31,6 +31,16 @@ function blackjack
             $init
             functions -e $init
             set -a live_items $item
+
+            set repaint _blackjack_{$item}_repaint
+            functions -q "$repaint" && begin
+                # run repaint function once
+                function {$repaint}_once -e $repaint -a repaint
+                    $repaint >/dev/null
+                end
+                emit $repaint $repaint
+                functions -e {$repaint}_once
+            end
         end
     end
 
