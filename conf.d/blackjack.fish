@@ -1,19 +1,23 @@
 status is-interactive || return
 
-function _blackjack_pwd_home
-    echo -n '〜'
-end
-
-function _blackjack_pwd_git_base
-    set_color yellow
-    echo -n $argv
-end
-
 function _blackjack_paint_item -e blackjack_paint -a item
     set paint _blackjack_{$item}_paint
     functions -q "$paint" && begin
-        $paint | read -gz _blackjack_painted__{$item}
+        _blackjack_format $item ($paint) | read -gz _blackjack_painted__{$item}
         emit blackjack_paint__{$item}
+    end
+end
+
+function _blackjack_format -a item
+    set value $argv[2..-1]
+    test -n "$value" || return
+    set format _blackjack_{$item}_format
+    functions -q "$format" || set format _blackjack_{$item}_format_default
+    if functions -q "$format"
+        $format $value
+        set_color normal
+    else
+        echo -n $value
     end
 end
 
@@ -44,14 +48,9 @@ function blackjack
         end
     end
 
-    # init separator
-    functions -q _blackjack_sep || function _blackjack_sep
-        printf ' '
-    end
-
     function _blackjack_paint__{$preset} '-eblackjack_paint__'$live_items -V items -V preset
         # paint separator
-        _blackjack_sep | read -z sep
+        _blackjack_format sep ' ' | read -z sep
 
         # paint items
         set painted_items

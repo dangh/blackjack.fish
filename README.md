@@ -19,15 +19,22 @@ alias fish_right_prompt=(blackjack cmd_duration)
 
 ## Customization
 
-### Separator
+### Builtin items customization
 
-Default separator is a space character. To change it, create function `blackjack_sep` and return the desired string.
+Builtin items shipped with default format. To change it, create the `_blackjack_<item>_format` function and print the desired string.
+List of builtin format functions:
 
-```fish
-function blackjack_sep
-    echo -n " | "
-end
-```
+- `_blackjack_sep_format`: separator between items, default is a white space character
+- `_blackjack_pwd_format`: current working directory
+- `_blackjack_pwd_home_format`: user home directory, default is `〜`
+- `_blackjack_pwd_git_dir_format`: dirname of the git repository, without the home directory prefix if exists. Truncated to 2 characters by default.
+- `_blackjack_pwd_git_base_format`: basename of the git directory
+- `_blackjack_pwd_dir_format`: dirname of the current directory. Truncated to 2 characters by default.
+- `_blackjack_pwd_base_format`: basename of the current directory
+- `_blackjack_status_format`: status code of the last command
+- `_blackjack_cmd_duration_format`: duration of the last command
+- `_blackjack_aws_format`: current AWS profile, read from `$AWS_PROFILE`
+- `_blackjack_node_format`: current NodeJS version, read from `$nvm_current_version`
 
 ### Create custom item
 

@@ -3,7 +3,15 @@ status is-interactive || return
 function _blackjack_aws
 
     function _blackjack_aws_paint
-        switch $AWS_PROFILE
+        echo -n $AWS_PROFILE
+    end
+
+    function _blackjack_aws_repaint -v AWS_PROFILE
+        emit blackjack_paint aws
+    end
+
+    function _blackjack_aws_format_default -a profile
+        switch $profile
             case DEV
                 set_color cyan
             case DEV-IN
@@ -15,11 +23,7 @@ function _blackjack_aws
             case PROD
                 set_color red
         end
-        echo -n $AWS_PROFILE
-    end
-
-    function _blackjack_aws_repaint -v AWS_PROFILE
-        emit blackjack_paint aws
+        echo -n $profile
     end
 
 end

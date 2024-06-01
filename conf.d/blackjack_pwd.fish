@@ -37,48 +37,54 @@ function _blackjack_pwd
         test "$_blackjack_pwd_dir" = "." && set -g _blackjack_pwd_dir
         set -g _blackjack_pwd_base (path basename $pwd)
 
-        set sep /
-        if functions -q _blackjack_pwd_sep
-            set sep (_blackjack_pwd_sep)
-        end
-
-        # paint
-        set dirs
-        for part in home git_dir git_base dir base
-            set var _blackjack_pwd_$part
-            set segment "$$var"
-            if test -n "$segment"
-                if functions -q "$var"
-                    set segment ($var (string split -n / $segment))
-                else
-                    switch $part
-                        case git_base
-                        case base
-                        case '*'
-                            set segment (string split -n / (_blackjack_pwd_truncate $segment))
-                    end
-                end
-                test -n "$segment" && set -a dirs $segment
-            end
-        end
-
+        _blackjack_format pwd_sep / | read -z sep
         set first
-        for dir in $dirs
-            if ! set -q first
-                set_color normal
-                set_color green
-                echo -n $sep
+        for part in home git_dir git_base dir base
+            set var _blackjack_pwd_{$part}
+            echo -n $$var | while read -d / -z dir
+                if set -q first
+                    set -e first
+                else
+                    echo -n $sep
+                end
+                echo -n (_blackjack_format pwd_{$part} $dir)
             end
-            set_color normal
-            set_color green
-            echo -n $dir
-            set -e first
         end
     end
 
     function _blackjack_pwd_repaint -v PWD
         set -g _blackjack_pwd_git_root (command git --no-optional-locks rev-parse --show-toplevel 2>/dev/null)
         emit blackjack_paint pwd
+    end
+
+    function _blackjack_pwd_home_format_default
+        set_color green
+        echo -n '〜'
+    end
+
+    function _blackjack_pwd_git_dir_format_default
+        set_color green
+        echo -n (_blackjack_pwd_truncate -l 2 $argv)
+    end
+
+    function _blackjack_pwd_git_base_format_default
+        set_color yellow
+        echo -n $argv
+    end
+
+    function _blackjack_pwd_dir_format_default
+        set_color green
+        echo -n (_blackjack_pwd_truncate -l 2 $argv)
+    end
+
+    function _blackjack_pwd_base_format_default
+        set_color green
+        echo -n $argv
+    end
+
+    function _blackjack_pwd_sep_format_default
+        set_color green
+        echo -n /
     end
 
 end
