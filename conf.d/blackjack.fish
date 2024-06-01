@@ -51,6 +51,7 @@ function blackjack
     function _blackjack_paint__{$preset} '-eblackjack_paint__'$live_items -V items -V preset
         # paint separator
         _blackjack_format sep ' ' | read -z sep
+        test -n "$sep" && set sep $sep(set_color normal)
 
         # paint items
         set painted_items
@@ -62,7 +63,15 @@ function blackjack
                 set -a painted_items $item
             end
         end
-        string join '\x1b[0m'$sep -- $painted_items | read -gz _blackjack_painted__{$preset}
+        set can_paint_sep 0
+        for item in $painted_items
+            if test $can_paint_sep -eq 1
+                printf $sep
+            end
+            printf $item
+            set_color normal
+            set can_paint_sep 1
+        end | read -gz _blackjack_painted__{$preset}
 
         # repaint prompt
         commandline -f repaint
