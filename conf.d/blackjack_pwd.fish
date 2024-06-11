@@ -36,6 +36,7 @@ function _blackjack_pwd
         set -g _blackjack_pwd_dir (path dirname $pwd)
         test "$_blackjack_pwd_dir" = "." && set -g _blackjack_pwd_dir
         set -g _blackjack_pwd_base (path basename $pwd)
+        test "$_blackjack_pwd_base" = "$_blackjack_pwd_dir" && set -g _blackjack_pwd_dir
 
         _blackjack_format pwd_sep / | read -z sep
         set first
