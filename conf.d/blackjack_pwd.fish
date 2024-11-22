@@ -10,43 +10,43 @@ function _blackjack_pwd
 
     function _blackjack_pwd_paint
         # parse
-        set -l pwd $PWD
+        set -l pwd (pwd -P)
+        set -l start 1
+        set -g _blackjack_pwd_home
+        set -g _blackjack_pwd_git_dir
+        set -g _blackjack_pwd_git_base
+        set -g _blackjack_pwd_git_path
+        set -g _blackjack_pwd_dir
+        set -g _blackjack_pwd_base
         switch $pwd
             case $HOME "$HOME/*"
                 set -g _blackjack_pwd_home $HOME
-                set pwd (string sub -s (math 2+(string length $HOME)) $pwd)
-            case '*'
-                set -g _blackjack_pwd_home
+                set start (math 2+(string length "$_blackjack_pwd_home"))
         end
         if test -n "$_blackjack_pwd_git_root"
-            set -g _blackjack_pwd_git_dir (path dirname "$_blackjack_pwd_git_root")
-            set -g _blackjack_pwd_git_base (path basename "$_blackjack_pwd_git_root")
-            set -g _blackjack_pwd_git_path (string sub -s (math 2+(string length "$_blackjack_pwd_git_root")) $PWD)
-            set pwd (string sub -s (math 2+(string length "$_blackjack_pwd_git_root")) $PWD)
-            switch $_blackjack_pwd_git_dir
-                case $HOME "$HOME/*"
-                    set -g _blackjack_pwd_git_dir (string sub -s (math 2+(string length $HOME)) $_blackjack_pwd_git_dir)
-            end
-        else
-            set -g _blackjack_pwd_git_root
-            set -g _blackjack_pwd_git_dir
-            set -g _blackjack_pwd_git_base
-            set -g _blackjack_pwd_git_path
+            set _blackjack_pwd_git_dir (string sub -s $start (path dirname "$_blackjack_pwd_git_root"))
+            set _blackjack_pwd_git_base (path basename "$_blackjack_pwd_git_root")
+            set start (math 2+(string length "$_blackjack_pwd_git_root"))
         end
-        set -g _blackjack_pwd_dir (path dirname $pwd)
-        test "$_blackjack_pwd_dir" = "." && set -g _blackjack_pwd_dir
-        set -g _blackjack_pwd_base (path basename $pwd)
-        test "$_blackjack_pwd_base" = "$_blackjack_pwd_dir" && set -g _blackjack_pwd_dir
-
+        if test $start -le (string length "$pwd")
+            set _blackjack_pwd_dir (string sub -s $start (path dirname $pwd))
+            set _blackjack_pwd_base (path basename $pwd)
+            if test "$_blackjack_pwd_base" = /
+                set -e _blackjack_pwd_dir
+            end
+        end
+        # render
         _blackjack_format pwd_sep / | read -z sep
-        set first
+        set no_sep
         for part in home git_dir git_base dir base
             set var _blackjack_pwd_{$part}
             printf $$var | while read -d / -z dir
-                if set -q first
-                    set -e first
-                else
-                    printf $sep
+                if test "$dir" != /
+                    if set -q no_sep
+                        set -e no_sep
+                    else
+                        printf $sep
+                    end
                 end
                 printf (_blackjack_format pwd_{$part} $dir)
             end
