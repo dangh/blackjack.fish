@@ -4,7 +4,6 @@ function _blackjack_paint_item -e blackjack_paint -a item
     set paint _blackjack_{$item}_paint
     functions -q "$paint" && begin
         _blackjack_format $item ($paint) | read -gz _blackjack_painted__{$item}
-        emit blackjack_paint__{$item}
     end
 end
 
@@ -48,7 +47,12 @@ function blackjack
         end
     end
 
-    function _blackjack_paint__{$preset} '-eblackjack_paint__'$live_items -V items -V preset
+    # initial paint
+    for item in $items
+        _blackjack_paint_item $item
+    end
+
+    function _blackjack_paint__{$preset} '-v_blackjack_painted__'$live_items -V items -V preset
         # paint separator
         _blackjack_format sep ' ' | read -z sep
         test -n "$sep" && set sep $sep(set_color normal)
@@ -57,10 +61,11 @@ function blackjack
         set painted_items
         for item in $items
             set painted_item _blackjack_painted__{$item}
-            if set -q $painted_item 2>/dev/null
-                test -n "$$painted_item" && set -a painted_items $$painted_item
-            else
+            set paint _blackjack_{$item}_paint
+            if not functions -q $paint
                 set -a painted_items $item
+            else if set -q $painted_item 2>/dev/null
+                test -n "$$painted_item" && set -a painted_items $$painted_item
             end
         end
         set can_paint_sep 0
@@ -75,12 +80,7 @@ function blackjack
 
         # repaint prompt
         commandline -f repaint
-    end
-
-    # initial paint
-    for item in $items
-        _blackjack_paint_item $item
-    end
+    end && _blackjack_paint__{$preset}
 
     # return painter function
     set painter _blackjack_painter__{$preset}
