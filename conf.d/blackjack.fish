@@ -3,7 +3,7 @@ status is-interactive || return
 function _blackjack_paint_item -e blackjack_paint -a item
     set paint _blackjack_{$item}_paint
     functions -q "$paint" && begin
-        _blackjack_format $item ($paint) | read -gz _blackjack_painted__{$item}
+        _blackjack_format $item ($paint) | read -gz _blackjack_painted_item__{$item}
     end
 end
 
@@ -52,7 +52,7 @@ function blackjack
         _blackjack_paint_item $item
     end
 
-    function _blackjack_paint__{$preset} '-v_blackjack_painted__'$live_items -V items -V preset
+    function _blackjack_paint_preset__{$preset} '-v_blackjack_painted_item__'$live_items -V items -V preset
         # paint separator
         _blackjack_format sep ' ' | read -z sep
         test -n "$sep" && set sep $sep(set_color normal)
@@ -60,7 +60,7 @@ function blackjack
         # paint items
         set painted_items
         for item in $items
-            set painted_item _blackjack_painted__{$item}
+            set painted_item _blackjack_painted_item__{$item}
             set paint _blackjack_{$item}_paint
             if not functions -q $paint
                 set -a painted_items $item
@@ -76,15 +76,15 @@ function blackjack
             printf $item
             set_color normal
             set can_paint_sep 1
-        end | read -gz _blackjack_painted__{$preset}
+        end | read -gz _blackjack_painted_preset__{$preset}
 
         # repaint prompt
         commandline -f repaint
-    end && _blackjack_paint__{$preset}
+    end && _blackjack_paint_preset__{$preset}
 
     # return painter function
-    set painter _blackjack_painter__{$preset}
-    set painted _blackjack_painted__{$preset}
+    set painter _blackjack_painter_preset__{$preset}
+    set painted _blackjack_painted_preset__{$preset}
     eval "function $painter
         printf \$$painted
     end"
