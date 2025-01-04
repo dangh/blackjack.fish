@@ -37,7 +37,7 @@ function blackjack
 
             set repaint _blackjack_{$item}_repaint
             functions -q "$repaint" && begin
-                # run repaint function once
+                # initial paint by invoking item repaint function via event
                 function {$repaint}_once -e $repaint -a repaint
                     $repaint >/dev/null
                 end
@@ -45,11 +45,6 @@ function blackjack
                 functions -e {$repaint}_once
             end
         end
-    end
-
-    # initial paint
-    for item in $items
-        _blackjack_paint_item $item
     end
 
     function _blackjack_paint_preset__{$preset} '-v_blackjack_painted_item__'$live_items -V items -V preset
