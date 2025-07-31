@@ -35,6 +35,7 @@ List of builtin format functions:
 - `_blackjack_cmd_duration_format`: duration of the last command
 - `_blackjack_aws_format`: current AWS profile, read from `$AWS_PROFILE`
 - `_blackjack_node_format`: current NodeJS version, read from `$nvm_current_version`
+- `_blackjack_jobs_cmd_format`: command of background jobs
 
 ### Create custom item
 
