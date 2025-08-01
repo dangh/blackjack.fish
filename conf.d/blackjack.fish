@@ -4,6 +4,7 @@ function _blackjack_paint_item -e blackjack_paint -a item
     set paint _blackjack_{$item}_paint
     functions -q "$paint" && begin
         _blackjack_format $item ($paint) | read -gz _blackjack_painted_item__{$item}
+        emit blackjack_painted_$item
     end
 end
 
@@ -47,7 +48,7 @@ function blackjack
         end
     end
 
-    function _blackjack_paint_preset__{$preset} '-v_blackjack_painted_item__'$live_items -V items -V preset
+    function _blackjack_paint_preset__{$preset} '-eblackjack_painted_'$live_items -V items -V preset
         # paint separator
         _blackjack_format sep ' ' | read -z sep
         test -n "$sep" && set sep $sep(set_color normal)
