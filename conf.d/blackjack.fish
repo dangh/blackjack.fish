@@ -83,6 +83,7 @@ function blackjack
     set painted _blackjack_painted_preset__{$preset}
     eval "function $painter
         printf \$$painted
+        emit blackjack_painted
     end"
     printf $painter
 end

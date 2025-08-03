@@ -33,4 +33,8 @@ function _blackjack_jobs
         _blackjack__fish_job_summary
     end
 
+    function _blackjack_jobs_repaint -e blackjack_painted
+        emit blackjack_paint jobs
+    end
+
 end
