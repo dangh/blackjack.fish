@@ -26,7 +26,7 @@ List of builtin format functions:
 
 - `_blackjack_sep_format`: separator between items, default is a white space character
 - `_blackjack_pwd_format`: current working directory
-- `_blackjack_pwd_home_format`: user home directory, default is `〜`
+- `_blackjack_pwd_home_format`: user home directory, default is `~`
 - `_blackjack_pwd_git_dir_format`: dirname of the git repository, without the home directory prefix if exists
 - `_blackjack_pwd_git_base_format`: basename of the git directory
 - `_blackjack_pwd_dir_format`: dirname of the current directory

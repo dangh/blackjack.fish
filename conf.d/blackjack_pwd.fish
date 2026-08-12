@@ -63,7 +63,7 @@ function _blackjack_pwd
 
     function _blackjack_pwd_home_format_default
         set_color green
-        printf '〜'
+        printf '~'
     end
 
     function _blackjack_pwd_git_dir_format_default
