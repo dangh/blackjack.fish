@@ -27,15 +27,32 @@ List of builtin format functions:
 - `_blackjack_sep_format`: separator between items, default is a white space character
 - `_blackjack_pwd_format`: current working directory
 - `_blackjack_pwd_home_format`: user home directory, default is `〜`
-- `_blackjack_pwd_git_dir_format`: dirname of the git repository, without the home directory prefix if exists. Truncated to 2 characters by default.
+- `_blackjack_pwd_git_dir_format`: dirname of the git repository, without the home directory prefix if exists
 - `_blackjack_pwd_git_base_format`: basename of the git directory
-- `_blackjack_pwd_dir_format`: dirname of the current directory. Truncated to 2 characters by default.
+- `_blackjack_pwd_dir_format`: dirname of the current directory
 - `_blackjack_pwd_base_format`: basename of the current directory
 - `_blackjack_status_format`: status code of the last command
 - `_blackjack_cmd_duration_format`: duration of the last command
 - `_blackjack_aws_format`: current AWS profile, read from `$AWS_PROFILE`
 - `_blackjack_node_format`: current NodeJS version, read from `$nvm_current_version`
 - `_blackjack_jobs_cmd_format`: command of background jobs
+
+### Truncating path segments
+
+Each `pwd` path segment can be truncated to the first N characters of every directory name. Set the matching global variable to a length greater than `0` to enable truncation; leave it unset (or `0`) to keep the full name.
+
+- `_blackjack_pwd_dir_length`: default length for every path segment
+- `_blackjack_pwd_git_dir_length`: overrides the length for `git_dir`, falls back to `_blackjack_pwd_dir_length`
+- `_blackjack_pwd_git_base_length`: overrides the length for `git_base`, falls back to `_blackjack_pwd_dir_length`
+- `_blackjack_pwd_base_length`: overrides the length for `base`, falls back to `_blackjack_pwd_dir_length`
+
+```fish
+# truncate every segment to 2 characters
+set -g _blackjack_pwd_dir_length 2
+
+# but keep the current directory name in full
+set -g _blackjack_pwd_base_length 0
+```
 
 ### Create custom item
 

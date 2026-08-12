@@ -2,8 +2,11 @@ status is-interactive || return
 
 function _blackjack_pwd_truncate
     argparse 'l/length=' -- $argv
-    test -n "$_flag_length" || set -l _flag_length 1
-    string replace -r -a -- "(\.?[^/]{$_flag_length})[^/]*(/?)" '$1$2' $argv[1]
+    if test -n "$_flag_length" && test "$_flag_length" -gt 0
+        string replace -r -a -- "(\.?[^/]{$_flag_length})[^/]*(/?)" '$1$2' $argv[1]
+    else
+        printf $argv[1]
+    end
 end
 
 function _blackjack_pwd
@@ -65,22 +68,28 @@ function _blackjack_pwd
 
     function _blackjack_pwd_git_dir_format_default
         set_color green
-        printf (_blackjack_pwd_truncate -l 2 $argv)
+        set -l len $_blackjack_pwd_dir_length
+        set -q _blackjack_pwd_git_dir_length && set len $_blackjack_pwd_git_dir_length
+        printf (_blackjack_pwd_truncate -l "$len" $argv)
     end
 
     function _blackjack_pwd_git_base_format_default
         set_color yellow
-        printf $argv
+        set -l len $_blackjack_pwd_dir_length
+        set -q _blackjack_pwd_git_base_length && set len $_blackjack_pwd_git_base_length
+        printf (_blackjack_pwd_truncate -l "$len" $argv)
     end
 
     function _blackjack_pwd_dir_format_default
         set_color green
-        printf (_blackjack_pwd_truncate -l 2 $argv)
+        printf (_blackjack_pwd_truncate -l "$_blackjack_pwd_dir_length" $argv)
     end
 
     function _blackjack_pwd_base_format_default
         set_color green
-        printf $argv
+        set -l len $_blackjack_pwd_dir_length
+        set -q _blackjack_pwd_base_length && set len $_blackjack_pwd_base_length
+        printf (_blackjack_pwd_truncate -l "$len" $argv)
     end
 
     function _blackjack_pwd_sep_format_default
